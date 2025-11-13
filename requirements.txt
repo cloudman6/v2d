@@ -1,0 +1,20 @@
+# Video to Document Conversion Project Dependencies
+
+# Core video processing
+moviepy>=1.0.3
+opencv-python>=4.5.0
+
+# Speech recognition
+openai-whisper
+
+# Image processing and analysis
+scikit-image>=0.19.0
+numpy<2.0.0  # Compatibility requirement, avoid NumPy 2.0 compatibility issues
+
+# Document generation
+python-docx>=0.8.11
+
+# Alibaba Cloud integration (for v2d_ali.py)
+aliyun-python-sdk-core>=2.13.36
+alibabacloud_oss_v2
+oss2

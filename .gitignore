@@ -1,0 +1,15 @@
+.env.local
+.cc
+.claude
+include
+lib
+share
+bin
+temp_files
+input*
+pyvenv.cfg
+test*
+*docx
+.DS_Store
+CLAUDE.md
+task.md
