@@ -238,11 +238,11 @@ def load_ali_result_from_cache(cache_file_path):
         return None
 
 def video_to_audio(video_path, audio_path):
-    """Extract audio from video (WAV format, 8000Hz sample rate)"""
+    """Extract audio from video (WAV format, 16000Hz sample rate)"""
     with VideoFileClip(video_path) as video:
         audio = video.audio
-        audio.write_audiofile(audio_path, codec="pcm_s16le", fps=8000)  # WAV uncompressed format, 8000Hz sample rate, better for speech recognition
-    print(f"Audio extraction completed: {audio_path} (8000Hz)")
+        audio.write_audiofile(audio_path, codec="pcm_s16le", fps=16000)  # WAV uncompressed format, 16000Hz sample rate, better for speech recognition
+    print(f"Audio extraction completed: {audio_path} (16000Hz)")
 
 def ali_audio_to_text(audio_file_path, cache_file_path=None, use_cache=False):
     """Use Alibaba Cloud speech recognition API for speech to text (with timestamps)
@@ -475,6 +475,9 @@ def delete_oss_audio():
         cfg.credentials_provider = credentials_provider
         cfg.region = OSS_REGION
         cfg.endpoint = OSS_ENDPOINT
+        # Set timeout: connection timeout 30s, read timeout 300s (5 minutes)
+        cfg.connect_timeout = 30
+        cfg.readwrite_timeout = 300
 
         # Create OSS client with configured information
         client = oss.Client(cfg)
