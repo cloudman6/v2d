@@ -683,26 +683,27 @@ def match_text_and_frames(text_segments, key_frames, video_path):
             # print(f"  Segment {i+1}: {seconds_to_hms(start_time)} - {seconds_to_hms(end_time)} -> {len(segment_texts)} text segments [Key frame: {key_frame['time']:.1f}s]")
 
         # Last segment: from last key frame to video end
-        last_keyframe = key_frames[-1]
-        start_time = key_frame_times[-1]
-        end_time = video_duration
+        if len(key_frame_times) > 1:
+            last_keyframe = key_frames[-1]
+            start_time = key_frame_times[-1]
+            end_time = video_duration
 
-        # Find all text fragments belonging to this time period
-        segment_texts = []
-        for seg in text_segments:
-            if start_time <= seg["start"] <= end_time:
-                segment_texts.append(seg)
+            # Find all text fragments belonging to this time period
+            segment_texts = []
+            for seg in text_segments:
+                if start_time <= seg["start"] <= end_time:
+                    segment_texts.append(seg)
 
-        segments_data.append({
-            "segment_index": len(key_frame_times),
-            "start_time": start_time,
-            "end_time": end_time,
-            "start_hms": seconds_to_hms(start_time),
-            "end_hms": seconds_to_hms(end_time),
-            "key_frame": last_keyframe,
-            "text_segments": segment_texts
-        })
-        # print(f"  Segment {len(key_frame_times)}: {seconds_to_hms(start_time)} - {seconds_to_hms(end_time)} -> {len(segment_texts)} text segments [Key frame: {last_keyframe['time']:.1f}s]")
+            segments_data.append({
+                "segment_index": len(key_frame_times),
+                "start_time": start_time,
+                "end_time": end_time,
+                "start_hms": seconds_to_hms(start_time),
+                "end_hms": seconds_to_hms(end_time),
+                "key_frame": last_keyframe,
+                "text_segments": segment_texts
+            })
+            # print(f"  Segment {len(key_frame_times)}: {seconds_to_hms(start_time)} - {seconds_to_hms(end_time)} -> {len(segment_texts)} text segments [Key frame: {last_keyframe['time']:.1f}s]")
 
     # Validation: ensure all text fragments are assigned to some segment
     assigned_texts = sum(len(seg["text_segments"]) for seg in segments_data)
